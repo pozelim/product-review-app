@@ -54,3 +54,4 @@ Comply with relevant data protection regulations, such as GDPR or CCPA.
 #### User Feedback:
 Include a mechanism for users to provide feedback on the application or report any issues they encounter.
 Provide a contact form or email address for users to reach out to the application administrators.
+
