@@ -8,7 +8,8 @@ import (
 )
 
 type MockUserStore struct {
-	err error
+	err  error
+	user domain.User
 }
 
 func (s *MockUserStore) Save(user domain.User) error {
@@ -16,6 +17,13 @@ func (s *MockUserStore) Save(user domain.User) error {
 		return s.err
 	}
 	return nil
+}
+
+func (s *MockUserStore) Get(username string) (domain.User, error) {
+	if s.err != nil {
+		return domain.User{}, s.err
+	}
+	return s.user, nil
 }
 
 type MockUserRegister struct {

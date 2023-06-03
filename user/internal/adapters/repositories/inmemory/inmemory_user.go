@@ -8,11 +8,25 @@ type UserStore struct {
 	userMap map[string]domain.User
 }
 
-func (s *UserStore) Register(user domain.User) error {
+func NewUserStore() *UserStore {
+	return &UserStore{
+		userMap: make(map[string]domain.User),
+	}
+}
+
+func (s *UserStore) Save(user domain.User) error {
 	_, has := s.userMap[user.Username]
 	if has {
 		return domain.ErrUserAlreadyExists
 	}
 	s.userMap[user.Username] = user
 	return nil
+}
+
+func (s *UserStore) Get(username string) (domain.User, error) {
+	user, has := s.userMap[username]
+	if !has {
+		return domain.User{}, domain.ErrUserNotFound
+	}
+	return user, nil
 }
