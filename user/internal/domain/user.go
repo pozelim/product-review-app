@@ -13,8 +13,12 @@ type UserRegister interface {
 	Register(User) error
 }
 
-type UserAutheticator interface {
-	Auth(username, password string) bool
+type UserAuthenticator interface {
+	Auth(username, password string) (string, error)
+}
+
+type UserAuthorier interface {
+	Authorize(token string) (bool, error)
 }
 
 type UserStore interface {
@@ -24,6 +28,7 @@ type UserStore interface {
 
 var (
 	ErrInvalidUser       = errors.New("invalid user")
+	ErrAuthFailed        = errors.New("auth failed")
 	ErrUserAlreadyExists = errors.New("user already exists")
 	ErrUserNotFound      = errors.New("user not found")
 )

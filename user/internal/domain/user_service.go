@@ -6,15 +6,22 @@ import (
 	"crypto/rand"
 	"encoding/base64"
 	"io"
+	"time"
+
+	"github.com/golang-jwt/jwt/v5"
+	"github.com/pkg/errors"
 )
+
+const tokenExpiration = 24 * time.Hour
 
 type UserService struct {
 	UserStore
-	secret string
+	secret          string
+	tokenSigningKey []byte
 }
 
-func NewUserService(store UserStore, secret string) *UserService {
-	return &UserService{store, secret}
+func NewUserService(store UserStore, secret string, tokenSigningKey []byte) *UserService {
+	return &UserService{store, secret, tokenSigningKey}
 }
 
 func (s *UserService) Register(user User) error {
@@ -30,16 +37,27 @@ func (s *UserService) Register(user User) error {
 	return s.Save(user)
 }
 
-func (s *UserService) Auth(username, password string) bool {
+func (s *UserService) Auth(username, password string) (string, error) {
 	user, err := s.Get(username)
 	if err != nil {
-		return false
+		return "", errors.Wrap(ErrAuthFailed, err.Error())
 	}
+
 	decryptedPassword, err := s.decryptPassword(user.Password)
 	if err != nil {
-		return false
+		return "", errors.Wrap(ErrAuthFailed, err.Error())
 	}
-	return decryptedPassword == password
+
+	if decryptedPassword != password {
+		return "", errors.Wrap(ErrAuthFailed, "invalid user or password")
+	}
+
+	token, errToken := s.generateToken(user)
+	if errToken != nil {
+		return "", errors.Wrap(ErrAuthFailed, errToken.Error())
+	}
+
+	return token, nil
 }
 
 func (s *UserService) encryptPassword(password string) (string, error) {
@@ -84,4 +102,34 @@ func decode(s string) []byte {
 		panic(err)
 	}
 	return data
+}
+
+func (s *UserService) generateToken(user User) (string, error) {
+	claims := jwt.RegisteredClaims{
+		Issuer:    "user-service",
+		Subject:   user.Username,
+		Audience:  []string{},
+		ExpiresAt: jwt.NewNumericDate(time.Now().Add(tokenExpiration)),
+		NotBefore: jwt.NewNumericDate(time.Now()),
+		IssuedAt:  jwt.NewNumericDate(time.Now()),
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	return token.SignedString(s.tokenSigningKey)
+}
+
+func (s *UserService) Authorize(token string) (string, error) {
+	parsedToken, err := jwt.Parse(token, func(token *jwt.Token) (any, error) {
+		return s.tokenSigningKey, nil
+	})
+	if err != nil {
+		return "", errors.Wrap(ErrAuthFailed, err.Error())
+	}
+
+	userName, err := parsedToken.Claims.GetSubject()
+	if err != nil {
+		return "", errors.Wrap(ErrAuthFailed, err.Error())
+	}
+
+	return userName, nil
 }
