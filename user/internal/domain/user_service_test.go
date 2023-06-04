@@ -10,7 +10,7 @@ import (
 
 func TestUserService_Register(t *testing.T) {
 	type fields struct {
-		userStore domain.UserStore
+		userStore domain.UserRepository
 	}
 	type args struct {
 		user domain.User

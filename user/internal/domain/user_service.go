@@ -15,12 +15,12 @@ import (
 const tokenExpiration = 24 * time.Hour
 
 type UserService struct {
-	UserStore
+	UserRepository
 	secret          string
 	tokenSigningKey []byte
 }
 
-func NewUserService(store UserStore, secret string, tokenSigningKey []byte) *UserService {
+func NewUserService(store UserRepository, secret string, tokenSigningKey []byte) *UserService {
 	return &UserService{store, secret, tokenSigningKey}
 }
 

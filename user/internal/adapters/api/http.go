@@ -1,6 +1,7 @@
 package api
 
 import (
+	"errors"
 	"net/http"
 	"strings"
 
@@ -49,7 +50,11 @@ func (s *HTTPServer) register(c *gin.Context) {
 	}
 
 	if err := s.userRegister.Register(newUser); err != nil {
-		c.String(http.StatusConflict, err.Error())
+		if errors.Is(err, domain.ErrUserAlreadyExists) {
+			c.String(http.StatusConflict, err.Error())
+		} else {
+			c.String(http.StatusInternalServerError, err.Error())
+		}
 		return
 	}
 

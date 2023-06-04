@@ -21,7 +21,7 @@ type UserAuthorizer interface {
 	Authorize(token string) (string, error)
 }
 
-type UserStore interface {
+type UserRepository interface {
 	Save(User) error
 	Get(string) (User, error)
 }

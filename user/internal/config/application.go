@@ -2,7 +2,7 @@ package config
 
 import (
 	"github.com/pozelim/product-review-app/user/internal/adapters/api"
-	"github.com/pozelim/product-review-app/user/internal/adapters/repositories/inmemory"
+	"github.com/pozelim/product-review-app/user/internal/adapters/repositories/pg"
 	"github.com/pozelim/product-review-app/user/internal/domain"
 )
 
@@ -11,8 +11,9 @@ type Application struct {
 }
 
 func NewApplication() *Application {
+	repository := pg.NewUserPgRepository("postgres://postgres:postgres@localhost:5432/user_service?sslmode=disable")
 	userService := domain.NewUserService(
-		inmemory.NewUserStore(),
+		repository,
 		"6368616e676520746869732070617373",
 		[]byte("tokenSigningKey"),
 	)
