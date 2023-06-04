@@ -17,8 +17,8 @@ type UserAuthenticator interface {
 	Auth(username, password string) (string, error)
 }
 
-type UserAuthorier interface {
-	Authorize(token string) (bool, error)
+type UserAuthorizer interface {
+	Authorize(token string) (string, error)
 }
 
 type UserStore interface {

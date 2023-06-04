@@ -1,7 +1,13 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/pozelim/product-review-app/user/internal/config"
+)
 
 func main() {
-	fmt.Println("Hello, World!")
+	application := config.NewApplication()
+	err := application.Start()
+	fmt.Println(err)
 }
