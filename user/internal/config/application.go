@@ -11,7 +11,7 @@ type Application struct {
 }
 
 func NewApplication() *Application {
-	repository := pg.NewUserPgRepository("postgres://postgres:postgres@localhost:5432/user_service?sslmode=disable")
+	repository := pg.NewUserPgRepository("postgres://postgres:postgres@postgres:5432/user_service?sslmode=disable")
 	userService := domain.NewUserService(
 		repository,
 		"6368616e676520746869732070617373",

@@ -1,4 +1,4 @@
-version: '3.7'
+version: '2.1'
 services:
     postgres:
         image: postgres:15.0
@@ -16,3 +16,19 @@ services:
           #- ./postgres-data:/var/lib/postgresql/data
           # copy the sql script to create tables
           - ./user/sql/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
+        healthcheck:
+          test: ["CMD-SHELL", "pg_isready"]
+          interval: 10s
+          timeout: 5s
+          retries: 5
+
+    user:
+      image: pozelim/product-review-app/user
+      build:
+        context: ./user
+        dockerfile: Dockerfile
+      depends_on:
+        postgres:
+          condition: service_healthy
+      ports:
+        - '8080:8080'
