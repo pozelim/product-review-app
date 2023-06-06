@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/pozelim/product-review-app/user/internal/config"
+	"github.com/pozelim/product-review-app/user/config"
 )
 
 func main() {

@@ -3,7 +3,7 @@ package domain_test
 import (
 	"testing"
 
-	"github.com/pozelim/product-review-app/user/internal/domain"
+	"github.com/pozelim/product-review-app/user/domain"
 	"github.com/stretchr/testify/assert"
 )
 

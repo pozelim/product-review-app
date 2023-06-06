@@ -2,7 +2,7 @@ package inmemory
 
 import (
 	"github.com/pozelim/product-review-app/common"
-	"github.com/pozelim/product-review-app/user/internal/domain"
+	"github.com/pozelim/product-review-app/user/domain"
 )
 
 type UserStore struct {

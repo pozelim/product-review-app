@@ -9,7 +9,7 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/pozelim/product-review-app/common"
-	"github.com/pozelim/product-review-app/user/internal/domain"
+	"github.com/pozelim/product-review-app/user/domain"
 )
 
 type UserPgRepository struct {

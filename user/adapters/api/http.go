@@ -7,7 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/pozelim/product-review-app/common"
-	"github.com/pozelim/product-review-app/user/internal/domain"
+	"github.com/pozelim/product-review-app/user/domain"
 )
 
 const BEARER_SCHEMA = "Bearer"

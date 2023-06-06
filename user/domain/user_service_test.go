@@ -4,8 +4,8 @@ import (
 	"testing"
 
 	"github.com/pozelim/product-review-app/common"
-	"github.com/pozelim/product-review-app/user/internal/adapters/repositories/inmemory"
-	"github.com/pozelim/product-review-app/user/internal/domain"
+	"github.com/pozelim/product-review-app/user/adapters/repositories/inmemory"
+	"github.com/pozelim/product-review-app/user/domain"
 	"github.com/stretchr/testify/assert"
 )
 

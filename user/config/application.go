@@ -1,9 +1,9 @@
 package config
 
 import (
-	"github.com/pozelim/product-review-app/user/internal/adapters/api"
-	"github.com/pozelim/product-review-app/user/internal/adapters/repositories/pg"
-	"github.com/pozelim/product-review-app/user/internal/domain"
+	"github.com/pozelim/product-review-app/user/adapters/api"
+	"github.com/pozelim/product-review-app/user/adapters/repositories/pg"
+	"github.com/pozelim/product-review-app/user/domain"
 )
 
 type Application struct {
