@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/pozelim/product-review-app/common"
 	"github.com/pozelim/product-review-app/user/internal/domain"
 )
 
@@ -50,7 +51,7 @@ func (s *HTTPServer) register(c *gin.Context) {
 	}
 
 	if err := s.userRegister.Register(newUser); err != nil {
-		if errors.Is(err, domain.ErrUserAlreadyExists) {
+		if errors.Is(err, common.ErrResourceAlreadyExists) {
 			c.String(http.StatusConflict, err.Error())
 		} else {
 			c.String(http.StatusInternalServerError, err.Error())

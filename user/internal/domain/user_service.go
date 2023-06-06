@@ -10,6 +10,7 @@ import (
 
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/pkg/errors"
+	"github.com/pozelim/product-review-app/common"
 )
 
 const tokenExpiration = 24 * time.Hour
@@ -26,7 +27,7 @@ func NewUserService(store UserRepository, secret string, tokenSigningKey []byte)
 
 func (s *UserService) Register(user User) error {
 	if !user.IsValid() {
-		return ErrInvalidUser
+		return common.ErrInvalidResource
 	}
 
 	var err error
@@ -40,21 +41,21 @@ func (s *UserService) Register(user User) error {
 func (s *UserService) Auth(username, password string) (string, error) {
 	user, err := s.Get(username)
 	if err != nil {
-		return "", errors.Wrap(ErrAuthFailed, err.Error())
+		return "", errors.Wrap(common.ErrAuthFailed, err.Error())
 	}
 
 	decryptedPassword, err := s.decryptPassword(user.Password)
 	if err != nil {
-		return "", errors.Wrap(ErrAuthFailed, err.Error())
+		return "", errors.Wrap(common.ErrAuthFailed, err.Error())
 	}
 
 	if decryptedPassword != password {
-		return "", errors.Wrap(ErrAuthFailed, "invalid user or password")
+		return "", errors.Wrap(common.ErrAuthFailed, "invalid user or password")
 	}
 
 	token, errToken := s.generateToken(user)
 	if errToken != nil {
-		return "", errors.Wrap(ErrAuthFailed, errToken.Error())
+		return "", errors.Wrap(common.ErrAuthFailed, errToken.Error())
 	}
 
 	return token, nil
@@ -123,12 +124,12 @@ func (s *UserService) Authorize(token string) (string, error) {
 		return s.tokenSigningKey, nil
 	})
 	if err != nil {
-		return "", errors.Wrap(ErrAuthFailed, err.Error())
+		return "", errors.Wrap(common.ErrAuthFailed, err.Error())
 	}
 
 	userName, err := parsedToken.Claims.GetSubject()
 	if err != nil {
-		return "", errors.Wrap(ErrAuthFailed, err.Error())
+		return "", errors.Wrap(common.ErrAuthFailed, err.Error())
 	}
 
 	return userName, nil

@@ -8,6 +8,7 @@ import (
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
+	"github.com/pozelim/product-review-app/common"
 	"github.com/pozelim/product-review-app/user/internal/domain"
 )
 
@@ -38,7 +39,7 @@ func (r *UserPgRepository) Save(user domain.User) error {
 		var pgErr *pgconn.PgError
 		if errors.As(err, &pgErr) {
 			if pgErr.Code == "23505" {
-				return domain.ErrUserAlreadyExists
+				return common.ErrResourceAlreadyExists
 			}
 		}
 		return err

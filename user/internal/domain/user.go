@@ -1,9 +1,5 @@
 package domain
 
-import (
-	"errors"
-)
-
 type User struct {
 	Username string
 	Password string
@@ -25,13 +21,6 @@ type UserRepository interface {
 	Save(User) error
 	Get(string) (User, error)
 }
-
-var (
-	ErrInvalidUser       = errors.New("invalid user")
-	ErrAuthFailed        = errors.New("auth failed")
-	ErrUserAlreadyExists = errors.New("user already exists")
-	ErrUserNotFound      = errors.New("user not found")
-)
 
 func NewUser(username, password string) User {
 	return User{

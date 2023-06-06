@@ -3,6 +3,7 @@ package domain_test
 import (
 	"testing"
 
+	"github.com/pozelim/product-review-app/common"
 	"github.com/pozelim/product-review-app/user/internal/adapters/repositories/inmemory"
 	"github.com/pozelim/product-review-app/user/internal/domain"
 	"github.com/stretchr/testify/assert"
@@ -45,13 +46,13 @@ func TestUserService_Register(t *testing.T) {
 					Password: "",
 				},
 			},
-			domain.ErrInvalidUser,
+			common.ErrInvalidResource,
 		},
 		{
 			"Should not return error if user store returns error",
 			fields{
 				userStore: &MockUserStore{
-					err: domain.ErrUserAlreadyExists,
+					err: common.ErrResourceAlreadyExists,
 				},
 			},
 			args{
@@ -60,7 +61,7 @@ func TestUserService_Register(t *testing.T) {
 					Password: "test",
 				},
 			},
-			domain.ErrUserAlreadyExists,
+			common.ErrResourceAlreadyExists,
 		},
 	}
 	for _, tt := range tests {

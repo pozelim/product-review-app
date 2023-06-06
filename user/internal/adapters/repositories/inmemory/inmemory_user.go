@@ -1,6 +1,7 @@
 package inmemory
 
 import (
+	"github.com/pozelim/product-review-app/common"
 	"github.com/pozelim/product-review-app/user/internal/domain"
 )
 
@@ -17,7 +18,7 @@ func NewUserStore() *UserStore {
 func (s *UserStore) Save(user domain.User) error {
 	_, has := s.userMap[user.Username]
 	if has {
-		return domain.ErrUserAlreadyExists
+		return common.ErrResourceAlreadyExists
 	}
 	s.userMap[user.Username] = user
 	return nil
@@ -26,7 +27,7 @@ func (s *UserStore) Save(user domain.User) error {
 func (s *UserStore) Get(username string) (domain.User, error) {
 	user, has := s.userMap[username]
 	if !has {
-		return domain.User{}, domain.ErrUserNotFound
+		return domain.User{}, common.ErrResourceNotFound
 	}
 	return user, nil
 }
